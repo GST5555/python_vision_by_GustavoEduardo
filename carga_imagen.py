@@ -8,3 +8,7 @@ cv.WaitKey(0)
 Bibliografía:
 http://www.raerpo.com/2010/12/1-mostrar-una-imagen.html
 '''
+
+'''
+No recuerdo como cargar algo lol
+'''
