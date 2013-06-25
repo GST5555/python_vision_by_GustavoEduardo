@@ -11,4 +11,5 @@ http://www.raerpo.com/2010/12/1-mostrar-una-imagen.html
 
 '''
 No recuerdo como cargar algo lol
+Probablemente olvide que antes de subir cosas a un git, debo hacer pull y comentarios antes de darle push
 '''
