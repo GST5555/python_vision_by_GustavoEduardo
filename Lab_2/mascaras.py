@@ -8,16 +8,18 @@ import numpy as np
 import math
 from time import time
 
-'''
-def normalización(matriz):
-
+def normalizacion(matriz,i,j):
+  arr_gau_n = np.zeros(shape = (i,j))
   #Toma valor minimo de matriz a ______
   a = matriz.min()
   #Toma valor maximo de matriz ______ b
   b = matriz.max()
   #valor de la convolución x
-  
-'''
+  for n in xrange(i):
+   for m in xrange(j):
+    arr_gau_n[n,m] = int(255*(matriz[n,m] - a) / (b-a)) 
+
+  return arr_gau_n
 
 def main():
 
@@ -58,7 +60,8 @@ def main():
     p_z_9 = array([(a[n-1,m-1],a[n-1,m],a[n-1,m+1]),(a[n,m-1],a[n,\
 m],a[n,m+1]),(a[n+1,m-1],a[n+1,m],a[n+1,m+1])])
     conv = np.sum(p_z_9*Filter_gauss)
-    arr_f_g[n,m] = int(conv/20)
+    arr_f_g[n,m] = int(conv)
+ arr_gua_n = normalizacion(arr_f_g,i,j)
  #Prewitt de detección de bordes
  for n in xrange(i-1):
   for m in xrange(j-1):
@@ -91,6 +94,10 @@ m],a[n,m+1]),(a[n+1,m-1],a[n+1,m],a[n+1,m+1])])
  im_gau = Image.open('Prewitt.png')
  im_gau.show(im_gau,"lol")
  
+ cv.SaveImage("gauss_norm.png",cv.fromarray(arr_gua_n))
+ im_gau_n = Image.open('gauss_norm.png')
+ im_gau_n.show(im_gau,"lol")
+
  t_final = time()
  t_total = t_final - t_inicial
  print "Tiempo de ejecución: ",t_total
