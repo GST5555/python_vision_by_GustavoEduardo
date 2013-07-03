@@ -9,7 +9,7 @@ import math
 from time import time
 
 def normalizacion(matriz,i,j):
-  arr_gau_n = np.zeros(shape = (i,j))
+  arr_n = np.zeros(shape = (i,j))
   #Toma valor minimo de matriz a ______
   a = matriz.min()
   #Toma valor maximo de matriz ______ b
@@ -17,9 +17,9 @@ def normalizacion(matriz,i,j):
   #valor de la convolución x
   for n in xrange(i):
    for m in xrange(j):
-    arr_gau_n[n,m] = int(255*(matriz[n,m] - a) / (b-a)) 
+    arr_n[n,m] = int(255*(matriz[n,m] - a) / (b-a)) 
 
-  return arr_gau_n
+  return arr_n
 
 def main():
 
@@ -44,6 +44,9 @@ def main():
  arr_pre = np.zeros(shape = (i,j))
  arr_f_g = np.zeros(shape = (i,j))
  arr_p_a = np.zeros(shape = (i,j))
+ arr_sol = np.zeros(shape = (i,j))
+ arr_sol_x = np.zeros(shape = (i,j))
+ arr_sol_y = np.zeros(shape = (i,j))
 
  (n,m) = (1,1)
  a = arr_gry
@@ -54,6 +57,7 @@ def main():
     p_z_9 = array([(a[n-1,m-1],a[n-1,m],a[n-1,m+1]),(a[n,m-1],a[n,m],a[n,m+1]),(a[n+1,m-1],a[n+1,m],a[n+1,m+1])]) 
     conv = np.sum(p_z_9*F_pas_alt)
     arr_p_a[n,m] = conv
+ arr_p_a_n = normalizacion(arr_p_a,i,j)
  #Para el filtro gaussiano
  for n in xrange(i-1):
   for m in xrange(j-1):
@@ -72,35 +76,75 @@ m],a[n,m+1]),(a[n+1,m-1],a[n+1,m],a[n+1,m+1])])
     ym = pow(gy,2)
     g = int(math.sqrt(xm+ym))
 
-    #Dada la informcaión de g se podra sacar lo que es el borde
-
-    if g > 135:
-       g = 255
-    elif g < 0:
-         g = 0
-    else:
-         g = 0 #no se pero quita lineas tenues lol
     arr_pre[n,m] = g
-  
+ arr_pre_n = normalizacion(arr_pre,i,j) 
+
+ for n in xrange(i-1):
+  for m in xrange(j-1):
+    p_z_9 = array([(a[n-1,m-1],a[n-1,m],a[n-1,m+1]),(a[n,m-1],a[n,m],a[n,m+1]),(a[n+1,m-1],a[n+1,m],a[n+1,m+1])])
+    gx = np.sum(p_z_9*SobelX)
+    gy = np.sum(p_z_9*SobelY)
+    xm = pow(gx,2)
+    ym = pow(gy,2)
+    g = int(math.sqrt(xm+ym))
+    arr_sol_x[n,m] = gx
+    arr_sol_y[n,m] = gy
+    arr_sol[n,m] = g
+ arr_sol_n = normalizacion(arr_sol,i,j)
+ arr_sol_xn = normalizacion(arr_sol_x,i,j) 
+ arr_sol_yn = normalizacion(arr_sol_y,i,j)
+ 
  cv.SaveImage("pasa_altos.png",cv.fromarray(arr_p_a))
- im_p_a = Image.open('pasa_altos.png')
- im_p_a.show(title="pasa altos")
+ im_p_a = cv.LoadImage('pasa_altos.png')
+ cv.ShowImage('pasa altos',im_p_a)
  
  cv.SaveImage("gauss.png",cv.fromarray(arr_f_g))
- im_gau = Image.open('gauss.png')
- im_gau.show(im_gau,'gauss')
-
+ im_gau = cv.LoadImage('gauss.png')
+ cv.ShowImage('gauss',im_gau)
+  
  cv.SaveImage("Prewitt.png",cv.fromarray(arr_pre))
- im_gau = Image.open('Prewitt.png')
- im_gau.show(im_gau,"lol")
+ im_pre = cv.LoadImage('Prewitt.png')
+ cv.ShowImage('Prewitt',im_pre)
  
  cv.SaveImage("gauss_norm.png",cv.fromarray(arr_gua_n))
- im_gau_n = Image.open('gauss_norm.png')
- im_gau_n.show(im_gau,"lol")
+ im_gau_n = cv.LoadImage('gauss_norm.png')
+ cv.ShowImage('Gauss Normalizado',im_gau_n)
+
+ cv.SaveImage("Pasa_alto.png",cv.fromarray(arr_p_a_n))
+ im_p_a_n = cv.LoadImage('Pasa_alto.png')
+ cv.ShowImage('Pasa Altos Normailizado',im_p_a_n)
+
+ cv.SaveImage("Prewitt_n.png",cv.fromarray(arr_pre_n))
+ im_pwtt_n = cv.LoadImage('Prewitt_n.png')
+ cv.ShowImage('Prewitt Normalizado',im_pwtt_n)
+ 
+ cv.SaveImage("Sobel.png",cv.fromarray(arr_sol))
+ im_sobel = cv.LoadImage('Sobel.png')
+ cv.ShowImage('Sobel',im_sobel)
+
+ cv.SaveImage("Sobel_n.png",cv.fromarray(arr_sol_n))
+ im_sol_n = cv.LoadImage('Sobel_n.png')
+ cv.ShowImage('Sobel Normalizado',im_sol_n)
+
+ cv.SaveImage("Sobel_x.png",cv.fromarray(arr_sol_x))
+ im_sol_x = cv.LoadImage('Sobel_x.png')
+ cv.ShowImage('Sobel X',im_sol_x)
+
+ cv.SaveImage("Sobel_y.png",cv.fromarray(arr_sol_y))
+ im_sol_y = cv.LoadImage('Sobel_y.png')
+ cv.ShowImage('Sobel Y',im_sol_y)
+
+ cv.SaveImage("Sobel_x_n.png",cv.fromarray(arr_sol_xn))
+ im_sol_x_n = cv.LoadImage('Sobel_x_n.png')
+ cv.ShowImage('Sobel X Normalizado',im_sol_x_n)
+
+ cv.SaveImage("Sobel_y_n.png",cv.fromarray(arr_sol_yn))
+ im_sol_y_n = cv.LoadImage('Sobel_y_n.png')
+ cv.ShowImage('Sobel Y Normalizado',im_sol_y_n)
 
  t_final = time()
  t_total = t_final - t_inicial
  print "Tiempo de ejecución: ",t_total
-
+ cv.WaitKey(0)
 if __name__ == '__main__':
     main()
