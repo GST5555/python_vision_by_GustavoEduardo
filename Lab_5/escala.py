@@ -11,9 +11,12 @@ from time import time
 def main():
     t_inicial = time()
 
-    im = Image.open('inverted_starman.png')
-    im.show()
-    arr_rgb = array(im)
+    #im = Image.open('inverted_starman.png')
+    im = cv.LoadImage("inverted_starman.png")
+    cv.ShowImage('original',im)
+    #cv.Set(im)
+    #im.show()
+    arr_rgb = np.asarray(im[:,:])
     (i,j) = (arr_rgb.shape[0],arr_rgb.shape[1])
 
     (w_n) = int(raw_input('nuevo ancho: '))
