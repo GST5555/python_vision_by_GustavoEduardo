@@ -56,15 +56,15 @@ def convolucion(a,i,j,p_bordes):
     return p_bordes
 
 def circulos(p_bordes,i,j):
-    r = 24 #Debe estar dado en pixeles
+    r = -24 #Debe estar dado en pixeles
     circulo = dict()
     
     for (n,m) in p_bordes:
         Gx,Gy,G = p_bordes[(n,m)]
-        xc = int(  n - ( r * (Gx/G) ) )
-        yc = int(  m + ( r * (Gy/G) ) )
-        xo = int(  n - ( r * (Gx/G) ) )
-        yo = int(  m - ( r * (Gy/G) ) )
+        xc = int(  n - ( r * (Gy/G) ) )
+        yc = int(  m + ( r * (Gx/G) ) )
+        xo = int(  n + ( r * (Gy/G) ) )
+        yo = int(  m - ( r * (Gx/G) ) )
        
         #if xc < 0 or xo < 0 or yc < 0 or yo < 0 or xc >= i or xo >= i or yc >= j or yo >= j:
         #if xc >= 0 and yc >= 0 and xc < i and yc < j:
@@ -97,8 +97,8 @@ def circulos(p_bordes,i,j):
         if circulo[n,m] > 0:
             apunto[n,m] = 140,0,255
 
-    cv.SaveImage("apunto_4.png",cv.fromarray(apunto))
-    im_apun = cv.LoadImage("apunto_4.png")
+    cv.SaveImage("apunto_6.png",cv.fromarray(apunto))
+    im_apun = cv.LoadImage("apunto_6.png")
     cv.ShowImage('Votos XD',im_apun)
            
 def main():
