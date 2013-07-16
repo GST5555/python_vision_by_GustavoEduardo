@@ -63,18 +63,19 @@ def DFS(a,i,j):
     obj = dict()
     
     visitados = []
-    z = 0 #Numero de grupo o conjunto
-    for (n,m) in p_bordes:
+    z = int(0) #Numero de grupo o conjunto
+    for (n,m) in a:
         coor = (n,m)
         
         if not coor in visitados:
-            
+            obj[z] = [coor] #Creo el primer elemento de un objeto
+                            #borde
             cola = [coor] #Creo mi lista de en cola
-            while len(cola)>0: #mientras alguien espere
+
+            while len(cola) > 0: #mientras alguien espere
+                #print cola
                 (x,y) = cola.pop(0) #sacamos el primer elemento
-                visitados.append(coor) #guardamos que ya usamos
-                                       #ese pixel
-                obj[z] = coor
+               
                 #barrido de 8 vecinos
                 for dx in [-1,0,1]:
                     for dy in [-1,0,1]:
@@ -82,22 +83,28 @@ def DFS(a,i,j):
                         #de la vecindad por que ya pasamos
                         if dx != 0 or dy !=0:
                             #Para no salirnos de la imagen
-                            if y+dy>=0 and y+gy<j and x+dx>=0 and x+dx < i:
+                            if y+dy>=0 and y+dy<j and x+dx>=0 and x+dx < i:
                                 #con esto tenemos la dirección
                                 #del vecino
                                 vecino = (x+dx,y+dx)
                                 #Si el vecino es parte de
-                                #bordes
+                                #bordes     
                                 if not vecino in visitados:
-                                    if vecino in p_bordes:
-                                        cola.append((vecino))
-            #Con esto se recorera a partir de una direccion
-            #borde arbitraria, y apartir de él con el mientras
-            #se asegurara de identificar 
-
+                                    if not vecino in cola:
+                                        if vecino in a:
+                                            cola.append(vecino)
+                #para evitar redundancias ya se tiene en cola
+                #todos los vecinos que son borde del objeos
+               
+                if not (x,y) in obj[z]:
+                    obj[z].append((x,y))                       
+                visitados.append((x,y)) #guardamos que ya usamos
+                                        #ese pixel
+             
+            z += 1
+        #Aquí salimos del if pero antes indicamos que si se vuelve a entontrar otro grupo u objeto este sera el objeto 1 y así sucesvamente
     return obj
     
-
 def circulos(p_bordes,i,j):
     r = -12.5 #Debe estar dado en pixeles
     circulo = dict()
@@ -161,12 +168,13 @@ def main():
 
     #Debo separarlos con un DFS
     objetos = DFS(p_bordes,i,j)
-
+    print objetos #imprimo para saber si el DFS jala
     #despues separarlos los analiso para encontrar sus centros...
+
 
     #lol
 
-    circulos(p_bordes,i,j)
+    #circulos(p_bordes,i,j)
     
     # print p_bordes    
 
