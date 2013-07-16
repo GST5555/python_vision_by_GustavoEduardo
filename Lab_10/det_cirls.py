@@ -55,6 +55,49 @@ def convolucion(a,i,j,p_bordes):
     cv.ShowImage('Bordes',im_cv)    
     return p_bordes
 
+def DFS(a,i,j):
+    #a contiene el diccionario con las coordenadas como key
+    #los valores de las keys son gx,gy,g aun hay que guardarlos
+    #para usarlos con otras cosas lol XD
+    #(i,j) --> Filas,Columnas
+    obj = dict()
+    
+    visitados = []
+    z = 0 #Numero de grupo o conjunto
+    for (n,m) in p_bordes:
+        coor = (n,m)
+        
+        if not coor in visitados:
+            
+            cola = [coor] #Creo mi lista de en cola
+            while len(cola)>0: #mientras alguien espere
+                (x,y) = cola.pop(0) #sacamos el primer elemento
+                visitados.append(coor) #guardamos que ya usamos
+                                       #ese pixel
+                obj[z] = coor
+                #barrido de 8 vecinos
+                for dx in [-1,0,1]:
+                    for dy in [-1,0,1]:
+                        #Esto es para no procesar el centro
+                        #de la vecindad por que ya pasamos
+                        if dx != 0 or dy !=0:
+                            #Para no salirnos de la imagen
+                            if y+dy>=0 and y+gy<j and x+dx>=0 and x+dx < i:
+                                #con esto tenemos la dirección
+                                #del vecino
+                                vecino = (x+dx,y+dx)
+                                #Si el vecino es parte de
+                                #bordes
+                                if not vecino in visitados:
+                                    if vecino in p_bordes:
+                                        cola.append((vecino))
+            #Con esto se recorera a partir de una direccion
+            #borde arbitraria, y apartir de él con el mientras
+            #se asegurara de identificar 
+
+    return obj
+    
+
 def circulos(p_bordes,i,j):
     r = -12.5 #Debe estar dado en pixeles
     circulo = dict()
@@ -113,6 +156,15 @@ def main():
     arr_gry = RGBtoGry(arr_rgb,i,j) #llamamos a RGB to Gray
     p_bordes = dict()
     p_bordes = convolucion(arr_gry,i,j,p_bordes) #llamamos a convolución
+
+    #Tengo los bordes a este momento
+
+    #Debo separarlos con un DFS
+    objetos = DFS(p_bordes,i,j)
+
+    #despues separarlos los analiso para encontrar sus centros...
+
+    #lol
 
     circulos(p_bordes,i,j)
     

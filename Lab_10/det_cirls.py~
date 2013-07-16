@@ -114,6 +114,14 @@ def main():
     p_bordes = dict()
     p_bordes = convolucion(arr_gry,i,j,p_bordes) #llamamos a convolución
 
+    #Tengo los bordes a este momento
+
+    #Debo separarlos con un DFS
+
+    #despues separarlos los analiso para encontrar sus centros...
+
+    #lol
+
     circulos(p_bordes,i,j)
     
     # print p_bordes    
