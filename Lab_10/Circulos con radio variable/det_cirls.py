@@ -13,8 +13,8 @@ def RGBtoGry(Ary_RGB,i,j):
     for n in xrange(i):
        for m in xrange(j):
           mtz_gry[n,m] = int((np.sum(Ary_RGB[n,m]))/3)
-    cv.SaveImage("Gray.png",cv.fromarray(mtz_gry))
-    im_gry = cv.LoadImage("Gray.png")    
+    cv.SaveImage("Gray_m.png",cv.fromarray(mtz_gry))
+    im_gry = cv.LoadImage("Gray_m.png")    
     cv.ShowImage('Grises', im_gry)
     return mtz_gry
 
@@ -50,8 +50,8 @@ def convolucion(a,i,j,p_bordes):
              g = 0
           arr_bor[n,m] = g #Si es borde valdra 255 si no lo es sera 0 para fondo; ¡a sí! con esto construimos la imagen de bordes.
 
-    cv.SaveImage("bord.png",cv.fromarray(arr_bor))
-    im_cv = cv.LoadImage("bord.png")
+    cv.SaveImage("bord_m.png",cv.fromarray(arr_bor))
+    im_cv = cv.LoadImage("bord_m.png")
     cv.ShowImage('Bordes',im_cv)    
     return p_bordes
 
@@ -153,7 +153,7 @@ def circulos(cir_cor,bor_cor):
 def main():
     t_inicial = time()
 
-    im = Image.open('circulos.png')
+    im = Image.open('CAM00382.png')
     im.show()
     arr_rgb = array(im)
     (i,j) = (arr_rgb.shape[0],arr_rgb.shape[1])
